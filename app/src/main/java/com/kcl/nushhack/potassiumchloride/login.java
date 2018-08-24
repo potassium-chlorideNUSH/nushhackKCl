@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ public class login extends AppCompatActivity {
     private Button loginButton;
 
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,23 +39,33 @@ public class login extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startLogin();
             }
         });
 
         mAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser()!=null){
+                    startActivity(new Intent(login.this, main.class));
+                }
+            }
+        };
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        mAuth.addAuthStateListener(mAuthListener);
         //updateUI(currentUser);
     }
 
     private void startLogin(){
-
-        if(validate_login_input()) {
+        String email = idText.getText().toString();
+        String password = passwordtext.getText().toString();
+        if(validate_login_input(email, password)) {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
@@ -69,30 +81,27 @@ public class login extends AppCompatActivity {
 
     }
 
-    private boolean validate_login_input(){
-        String email = idText.getText().toString();
-        String password = passwordtext.getText().toString();
+    private boolean validate_login_input(String email, String password){
+        return true;
     }
 
     public void login(View view) {
         loginButton.setEnabled(false);
-        if (!check()) {
-            loginFail();
-            return;
-        }
         final ProgressDialog progressDialog = new ProgressDialog(login.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Logging in...");
         progressDialog.show();
-        String id = idText.getText().toString();
-        String password = passwordtext.getText().toString();
+        if (!check()) {
+            loginFail();
+            return;
+        }
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         progressDialog.dismiss();
                         loginPass();
                     }
-                }, 1000);
+                }, 3000);
     }
 
     void loginFail(){
@@ -105,6 +114,7 @@ public class login extends AppCompatActivity {
         Intent intent=new Intent(this,main.class);
         intent.putExtra("name",idText.getText().toString());
         loginButton.setEnabled(true);
+        startActivity(intent);
     }
     public boolean check() {
         boolean valid = true;
