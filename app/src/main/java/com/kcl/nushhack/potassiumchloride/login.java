@@ -36,12 +36,12 @@ public class login extends AppCompatActivity {
         passwordtext = findViewById(R.id.input_password);
         loginButton = findViewById(R.id.btn_login);
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        /*loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startLogin();
             }
-        });
+        });*/
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -77,8 +77,6 @@ public class login extends AppCompatActivity {
         } else {
             Toast.makeText(login.this, "Sign in failed", Toast.LENGTH_LONG).show();
         }
-
-
     }
 
     private boolean validate_login_input(String email, String password){
