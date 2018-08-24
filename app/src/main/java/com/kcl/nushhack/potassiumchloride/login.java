@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +23,7 @@ public class login extends AppCompatActivity {
 
     private EditText idText;
     private EditText passwordtext;
-    private Button loginButton;
+    private AppCompatButton loginButton;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -49,6 +50,7 @@ public class login extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()!=null){
                     startActivity(new Intent(login.this, main.class));
+                    finish();
                 }
             }
         };
@@ -81,6 +83,7 @@ public class login extends AppCompatActivity {
     }
 
     private boolean validate_login_input(String email, String password){
+        //TODO
         return true;
     }
 
