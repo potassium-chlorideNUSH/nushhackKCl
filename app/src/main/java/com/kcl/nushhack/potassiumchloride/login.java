@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,6 +67,8 @@ public class login extends AppCompatActivity {
     private void startLogin(){
         String email = idText.getText().toString();
         String password = passwordtext.getText().toString();
+
+
         if(validate_login_input(email, password)) {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -79,12 +82,40 @@ public class login extends AppCompatActivity {
             Toast.makeText(login.this, "Sign in failed", Toast.LENGTH_LONG).show();
         }
 
+    }
 
+    private boolean isEmailValid(String email) {
+        return email.contains("@");
+    }
+
+    private boolean isPasswordValid(String password) {
+        return password.length() >= 8;
     }
 
     private boolean validate_login_input(String email, String password){
-        //TODO
-        return true;
+        boolean error = false;
+        View focusView = null;
+
+        // Check for a valid password, if the user entered one.
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            passwordtext.setError(getString(R.string.error_invalid_password));
+            focusView = passwordtext;
+            error = true;
+        }
+
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(email)) {
+            idText.setError(getString(R.string.error_field_required));
+            focusView = idText;
+            error = true;
+        } else if (!isEmailValid(email)) {
+            idText.setError(getString(R.string.error_invalid_email));
+            focusView = idText;
+            error = true;
+        }
+        if(error) focusView.requestFocus();
+
+        return !error;
     }
 
     public void login(View view) {
