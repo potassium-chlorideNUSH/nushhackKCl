@@ -7,18 +7,18 @@ import java.util.List;
  */
 
 public class student extends user {
-    List<module> modules;
+    List<lesson> lessons;
     int m_group,year;
-    public student(int id,int m_group,int year,String name,String email,List<module> modules){
+    public student(int id,int m_group,int year,String name,String email,List<lesson> lessons){
         this.id=id;
         this.m_group=m_group;
         this.year=year;
         this.name=name;
         this.email=email;
-        this.modules=modules;
+        this.lessons=lessons;
     }
-    public void addModule(module module){
-        modules.add(module);
+    public void addLesson(lesson lesson){
+        lessons.add(lesson);
     }
 
 }
