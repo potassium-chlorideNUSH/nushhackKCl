@@ -1,6 +1,7 @@
 package com.kcl.nushhack.potassiumchloride;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -14,16 +15,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.lang.reflect.Constructor;
+
 public class main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    DrawerLayout dl;
+    ConstraintLayout cl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        dl=findViewById(R.id.drawer_layout);
+        cl=findViewById(R.id.fragment_layout);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -61,9 +64,9 @@ public class main extends AppCompatActivity
         if (id == R.id.announcements) {
             //load respective fragment
         } else if (id == R.id.timetable) {
-            //load respective fragment
+            load_timetable();
         } else if (id == R.id.school_cal) {
-            //load respective fragment
+            load_school_cal();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -75,22 +78,22 @@ public class main extends AppCompatActivity
         for (Fragment fragment:getSupportFragmentManager().getFragments()) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-        Fragment newFragment = new notif_fragment();
-        getSupportFragmentManager().beginTransaction().add(dl.getId(),newFragment).commit();
+        //Fragment newFragment = new notif_fragment();
+        //getSupportFragmentManager().beginTransaction().add(dl.getId(),newFragment).commit();
 
     }
     void load_timetable(){
         setTitle("Your Timetable");for (Fragment fragment:getSupportFragmentManager().getFragments()) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-        Fragment newFragment = new timetable_fragment();
-        getSupportFragmentManager().beginTransaction().add(dl.getId(),newFragment).commit();
+        //Fragment newFragment = new timetable_fragment();
+        //getSupportFragmentManager().beginTransaction().add(dl.getId(),newFragment).commit();
     }
     void load_school_cal(){
         setTitle("School Calendar");for (Fragment fragment:getSupportFragmentManager().getFragments()) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-        Fragment newFragment = new school_cal_fragment();
-        getSupportFragmentManager().beginTransaction().add(dl.getId(),newFragment).commit();
+        //Fragment newFragment = new school_cal_fragment();
+        //getSupportFragmentManager().beginTransaction().add(dl.getId(),newFragment).commit();
     }
 }
