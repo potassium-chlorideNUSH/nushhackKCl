@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "549183379498-lkc2fqg1nl7qtptfnh0gui2g185bm521.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kcl.nushhack.potassiumchloride",
+            "certificate_hash": "8378fdb341e57ca975f044ef5df93da521580942"
+          }
+        },
+        {
           "client_id": "549183379498-2tehdaskffnj4d8786pcd2busbdk91q9.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549183379498-2tehdaskffnj4d8786pcd2busbdk91q9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
