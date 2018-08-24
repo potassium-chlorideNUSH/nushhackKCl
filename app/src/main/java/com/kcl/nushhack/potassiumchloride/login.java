@@ -53,7 +53,7 @@ public class login extends AppCompatActivity {
     void loginPass(){
         //go main
         Intent intent=new Intent(this,main.class);
-        intent.putExtra("id",idText.getText().toString());
+        intent.putExtra("name",idText.getText().toString());
         loginButton.setEnabled(true);
     }
     public boolean check() {
