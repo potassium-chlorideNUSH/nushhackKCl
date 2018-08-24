@@ -19,11 +19,6 @@ public class student extends user {
         this.name=name;
         this.email=email;
         this.lessons=lessons;
-        FirebaseMessaging.getInstance().subscribeToTopic(Integer.toString(year));
-        FirebaseMessaging.getInstance().subscribeToTopic(Integer.toString(m_group));
-        for (lesson l: lessons) {
-            FirebaseMessaging.getInstance().subscribeToTopic(l.getName());
-        }
     }
     public void addLesson(lesson lesson){
         lessons.add(lesson);
