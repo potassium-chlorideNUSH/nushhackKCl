@@ -18,7 +18,7 @@ public class student extends user {
         this.modules=modules;
     }
     public void addModule(module module){
-        modules.
+        modules.add(module);
     }
 
 }
