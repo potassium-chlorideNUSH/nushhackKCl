@@ -7,6 +7,6 @@ import java.util.List;
  */
 
 public class teacher extends user {
-    List<module> module;
+    List<lesson> lessons;
 
 }
