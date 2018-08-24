@@ -13,7 +13,7 @@ import java.util.List;
 
 public class firebase_handler {
 
-    private static final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
     private DatabaseReference mConditionRef = mRootRef.child("condition");
     public DatabaseReference getmConditionRef() {

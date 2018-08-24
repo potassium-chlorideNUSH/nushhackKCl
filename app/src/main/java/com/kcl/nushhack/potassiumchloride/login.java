@@ -2,6 +2,7 @@ package com.kcl.nushhack.potassiumchloride;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,11 +11,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+
 public class login extends AppCompatActivity {
 
-    EditText idText;
-    EditText passwordtext;
-    Button loginButton;
+    private EditText idText;
+    private EditText passwordtext;
+    private Button loginButton;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +33,45 @@ public class login extends AppCompatActivity {
         idText = findViewById(R.id.input_id);
         passwordtext = findViewById(R.id.input_password);
         loginButton = findViewById(R.id.btn_login);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
+    }
+
+    private void startLogin(){
+
+        if(validate_login_input()) {
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(login.this, "Sign in failed", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(login.this, "Sign in failed", Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
+    private boolean validate_login_input(){
+        String email = idText.getText().toString();
+        String password = passwordtext.getText().toString();
     }
 
     public void login(View view) {
@@ -45,6 +94,7 @@ public class login extends AppCompatActivity {
                     }
                 }, 1000);
     }
+
     void loginFail(){
         Toast t=Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG);
         t.show();
