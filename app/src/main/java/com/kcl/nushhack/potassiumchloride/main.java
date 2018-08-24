@@ -1,5 +1,6 @@
 package com.kcl.nushhack.potassiumchloride;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -15,10 +16,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.kcl.nushhack.potassiumchloride.fragments.school_cal_fragment;
+
 import java.lang.reflect.Constructor;
 
 public class main extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,school_cal_fragment.OnFragmentInteractionListener {
 
     ConstraintLayout cl;
     @Override
@@ -35,9 +38,12 @@ public class main extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        load_notif();
+        load_school_cal();
     }
-
+    @Override
+    public void onFragmentInteraction(Uri x) {
+//do something here, maybe switch to another fragment
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -79,7 +85,7 @@ public class main extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
         //Fragment newFragment = new notif_fragment();
-        //getSupportFragmentManager().beginTransaction().add(dl.getId(),newFragment).commit();
+        //getSupportFragmentManager().beginTransaction().add(cl.getId(),newFragment).commit();
 
     }
     void load_timetable(){
@@ -87,13 +93,13 @@ public class main extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
         //Fragment newFragment = new timetable_fragment();
-        //getSupportFragmentManager().beginTransaction().add(dl.getId(),newFragment).commit();
+        //getSupportFragmentManager().beginTransaction().add(cl.getId(),newFragment).commit();
     }
     void load_school_cal(){
         setTitle("School Calendar");for (Fragment fragment:getSupportFragmentManager().getFragments()) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-        //Fragment newFragment = new school_cal_fragment();
-        //getSupportFragmentManager().beginTransaction().add(dl.getId(),newFragment).commit();
+        Fragment newFragment = new school_cal_fragment();
+        getSupportFragmentManager().beginTransaction().add(cl.getId(),newFragment).commit();
     }
 }
