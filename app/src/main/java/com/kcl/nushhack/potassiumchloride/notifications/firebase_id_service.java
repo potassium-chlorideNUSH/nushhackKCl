@@ -1,7 +1,10 @@
-package com.kcl.nushhack.potassiumchloride;
+package com.kcl.nushhack.potassiumchloride.notifications;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.google.android.gms.common.internal.Constants;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
