@@ -17,6 +17,7 @@
     <string name="navigation_drawer_open">Drawer Open</string>
     <string name="navigation_drawer_close">Drawer Closed</string>
     <string name="default_notification_channel_id">0</string>
+    <string name="default_notification_channel_name">Default Notification Channel</string>
 
 
 </resources>
