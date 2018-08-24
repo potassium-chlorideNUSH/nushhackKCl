@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class login extends AppCompatActivity {
@@ -50,6 +52,7 @@ public class login extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()!=null){
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                     startActivity(new Intent(login.this, main.class));
                     finish();
                 }
@@ -116,43 +119,5 @@ public class login extends AppCompatActivity {
         if(error) focusView.requestFocus();
 
         return !error;
-    }
-
-    public void login(View view) {
-        loginButton.setEnabled(false);
-        if (!check()) {
-            loginFail();
-            return;
-        }
-        final ProgressDialog progressDialog = new ProgressDialog(login.this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Logging in...");
-        progressDialog.show();
-        String id = idText.getText().toString();
-        String password = passwordtext.getText().toString();
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        progressDialog.dismiss();
-                        loginPass();
-                    }
-                }, 1000);
-    }
-
-    void loginFail(){
-        Toast t=Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG);
-        t.show();
-        loginButton.setEnabled(true);
-    }
-    void loginPass(){
-        //go main
-        Intent intent=new Intent(this,main.class);
-        intent.putExtra("name",idText.getText().toString());
-        loginButton.setEnabled(true);
-    }
-    public boolean check() {
-        boolean valid = true;
-        //check on firebase
-        return valid;
     }
 }
