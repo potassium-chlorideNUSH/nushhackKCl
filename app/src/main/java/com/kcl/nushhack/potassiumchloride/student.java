@@ -2,6 +2,7 @@ package com.kcl.nushhack.potassiumchloride;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,48 +10,49 @@ import java.util.List;
  */
 
 public class student {
-    private List<lesson> lessons;
-    private String m_group, student_id;
-    private int year;
+    //lesson ID
+    private List<String> lessons = new ArrayList<>();
+    private long m_group, stu_id, year;
 
-    public List<lesson> getLessons() {
+    public List<String> getLessons() {
         return lessons;
     }
 
-    public void setLessons(List<lesson> lessons) {
-        this.lessons = lessons;
+    public void addLessons(String ls) {
+        this.lessons.add(ls);
     }
 
-    public String getM_group() {
+    public long getM_group() {
         return m_group;
     }
 
-    public void setM_group(String m_group) {
+    public void setM_group(long m_group) {
         this.m_group = m_group;
     }
 
-    public int getYear() {
+    public long getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(long year) {
         this.year = year;
     }
 
-    public String getStudent_id() {
-        return student_id;
+    public long getStu_id() {
+        return stu_id;
     }
 
-    public void setStudent_id(String student_id) {
-        this.student_id = student_id;
+    public void setStu_id(long stu_id) {
+        this.stu_id = stu_id;
     }
 
     public student(){}
 
-    public student(String student_id,String m_group){
-        this.student_id=student_id;
+    public student(long stu_id,long m_group, long year){
+        this.stu_id=stu_id;
         this.m_group=m_group;
-        this.year=m_group.charAt(0)-'0';
+        this.year=year;
     }
+
 
 }

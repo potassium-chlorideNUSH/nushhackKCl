@@ -15,10 +15,12 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.kcl.nushhack.potassiumchloride.fragments.notification_fragment;
 import com.kcl.nushhack.potassiumchloride.main;
 
 
@@ -37,8 +39,7 @@ import java.util.Random;
 public class firebase_messaging_service extends FirebaseMessagingService {
 
     private static final String TAG = "FirebaseMessagingServce";
-
-    //private ArrayList<String> titles, contents;
+    private Bundle args = new Bundle();
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -50,23 +51,12 @@ public class firebase_messaging_service extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             notificationTitle = remoteMessage.getNotification().getTitle();
             notificationBody = remoteMessage.getNotification().getBody();
-            /*if (titles.size() < 10){
-                titles.set(titles.size() - 1, notificationTitle);
-            }
-            else{
-                titles.remove(0);
-                titles.set(9, notificationTitle);
-            }
-
-            if (contents.size() < 10){
-                contents.set(contents.size() - 1, notificationTitle);
-            }
-            else{
-                contents.remove(0);
-                contents.set(9, notificationTitle);
-            }*/
 
         }
+
+        args.putString("title", notificationTitle);
+        args.putString("content", notificationBody);
+        main.setNotification_args(args);
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
@@ -94,5 +84,7 @@ public class firebase_messaging_service extends FirebaseMessagingService {
 
         notificationManager.notify(0, notificationBuilder.build());
     }
+
+
 }
 
