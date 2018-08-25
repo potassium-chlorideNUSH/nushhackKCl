@@ -10,7 +10,8 @@ import java.util.List;
 
 public class student {
     private List<lesson> lessons;
-    private int m_group,year,student_id;
+    private String m_group, student_id;
+    private int year;
 
     public List<lesson> getLessons() {
         return lessons;
@@ -20,11 +21,11 @@ public class student {
         this.lessons = lessons;
     }
 
-    public int getM_group() {
+    public String getM_group() {
         return m_group;
     }
 
-    public void setM_group(int m_group) {
+    public void setM_group(String m_group) {
         this.m_group = m_group;
     }
 
@@ -36,20 +37,20 @@ public class student {
         this.year = year;
     }
 
-    public int getStudent_id() {
+    public String getStudent_id() {
         return student_id;
     }
 
-    public void setStudent_id(int student_id) {
+    public void setStudent_id(String student_id) {
         this.student_id = student_id;
     }
 
     public student(){}
 
-    public student(int student_id,int m_group,int year){
+    public student(String student_id,String m_group){
         this.student_id=student_id;
         this.m_group=m_group;
-        this.year=year;
+        this.year=m_group.charAt(0)-'0';
     }
 
 }
