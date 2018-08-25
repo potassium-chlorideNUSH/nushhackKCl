@@ -1,17 +1,41 @@
 package com.kcl.nushhack.potassiumchloride;
 
-abstract class user {
-    String name, email;
-    int id;
+public class user {
+
+    private String name, email;
+    private notification[] notifications;
 
     public notification[] getNotifications() {
         return notifications;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setNotifications(notification[] notifications) {
         this.notifications = notifications;
     }
 
-    notification[] notifications;
+    public user(){}
+
+    public user(String email, String name){
+        this.name = name;
+        this.email = email;
+    }
+
+
 
 }

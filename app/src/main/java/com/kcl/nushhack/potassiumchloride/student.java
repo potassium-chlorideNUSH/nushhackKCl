@@ -13,11 +13,9 @@ public class student extends user {
     int m_group,year;
 
     public student(int id,int m_group,int year,String name,String email,List<lesson> lessons){
-        this.id=id;
+        super(email,name);
         this.m_group=m_group;
         this.year=year;
-        this.name=name;
-        this.email=email;
         this.lessons=lessons;
     }
     public void addLesson(lesson lesson){
