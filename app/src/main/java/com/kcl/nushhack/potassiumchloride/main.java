@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,16 +38,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.kcl.nushhack.potassiumchloride.fragments.dummy.DummyContent;
-import com.kcl.nushhack.potassiumchloride.fragments.notification_fragment;
 import com.kcl.nushhack.potassiumchloride.fragments.school_cal_fragment;
-import com.kcl.nushhack.potassiumchloride.notifications.firebase_messaging_service;
+import com.kcl.nushhack.potassiumchloride.swipecard.cardFragment;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 
 public class main extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,notification_fragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener,school_cal_fragment.OnFragmentInteractionListener {
 
     public static final String USER_TABLE = "users";
     public static final String STUDENT_TABLE = "students";
@@ -58,8 +56,10 @@ public class main extends AppCompatActivity
     private teacher Current_teacher;
     private student Current_student;
 
-    private static Bundle notification_args = new Bundle();
+    @Override
+            public void onFragmentInteraction(Uri x){
 
+    }
     ConstraintLayout cl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +80,7 @@ public class main extends AppCompatActivity
 
     }
 
-    @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem x){}
+
     @Override
     protected void onStart(){
         super.onStart();
@@ -91,7 +90,7 @@ public class main extends AppCompatActivity
         TextView header_name = headerLayout.findViewById(R.id.header_name);
         TextView header_email = headerLayout.findViewById(R.id.header_email);
         header_name.setText(login.Current_user.getName());
-         header_email.setText(login.Current_user.getEmail());
+        header_email.setText(login.Current_user.getEmail());
 
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         if(login.Current_user.getType().equals(TOKEN_STUDENT)){
@@ -108,7 +107,7 @@ public class main extends AppCompatActivity
                         String lessonID = dss.getValue(String.class);
                         Current_student.addLessons(lessonID);
                     }
-                    Log.d("hi",Current_student.getLessons().get(0));
+                    //Log.d("hi",Current_student.getLessons().get(0));
                 }
 
                 @Override
@@ -130,7 +129,7 @@ public class main extends AppCompatActivity
                         String lessonID = dss.getValue(String.class);
                         Current_teacher.addLessonTeach(lessonID);
                     }
-                    Log.d("hi1",Current_teacher.getLessonTeach().get(0));
+                    //Log.d("hi1",Current_teacher.getLessonTeach().get(0));
                 }
 
                 @Override
@@ -140,7 +139,6 @@ public class main extends AppCompatActivity
             });
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -180,7 +178,7 @@ public class main extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.announcements) {
-           load_notif();
+            load_notif();
         } else if (id == R.id.timetable) {
             load_timetable();
         } else if (id == R.id.school_cal) {
@@ -196,12 +194,9 @@ public class main extends AppCompatActivity
         for (Fragment fragment:getSupportFragmentManager().getFragments()) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-        notification_fragment newFragment = new notification_fragment();
-        notification_args.putStringArrayList("titles", new ArrayList<String>());
-        notification_args.putStringArrayList("contents", new ArrayList<String>());
-        newFragment.setArguments(notification_args);
+        //Fragment newFragment = new cardFragment();
+        //getSupportFragmentManager().beginTransaction().add(cl.getId(),newFragment).commit();
 
-        getSupportFragmentManager().beginTransaction().add(cl.getId(),newFragment).commit();
     }
     void load_timetable(){
         setTitle("Your Timetable");for (Fragment fragment:getSupportFragmentManager().getFragments()) {
@@ -217,22 +212,4 @@ public class main extends AppCompatActivity
         Fragment newFragment = new school_cal_fragment();
         getSupportFragmentManager().beginTransaction().add(cl.getId(),newFragment).commit();
     }
-
-    public static Bundle getNotification_args() {
-        return notification_args;
-    }
-
-    public static void setNotification_args(Bundle args) {
-        ArrayList<String> titles = main.notification_args.getStringArrayList("titles");
-        titles.add(args.getString("title"));
-        ArrayList<String> contents = main.notification_args.getStringArrayList("contents");
-        contents.add(args.getString("content"));
-        main.notification_args = new Bundle();
-        notification_args.putStringArrayList("titles", titles);
-        notification_args.putStringArrayList("contents", contents);
-        notification_fragment newFragment = new notification_fragment();
-        newFragment.setArguments(notification_args);
-        newFragment.update();
-    }
-
 }

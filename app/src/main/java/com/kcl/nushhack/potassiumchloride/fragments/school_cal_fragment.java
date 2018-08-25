@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Debug;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,6 +22,12 @@ import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kcl.nushhack.potassiumchloride.R;
 
 import org.w3c.dom.Text;
@@ -39,6 +46,8 @@ import java.util.List;
 public class school_cal_fragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -65,16 +74,37 @@ public class school_cal_fragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    static GridView grid;TextView month_year;String[] content;int start;
+    static GridView grid;TextView month_year; List<String> content = new ArrayList<>();int start;
     ArrayList<LinearLayout> days=new ArrayList<LinearLayout>();
     void loadCalendar(){
         //somehow get the firebase thing as a whole string
         //month year day of 1st eventday1 eventday2 etc
         days.clear();
-        String info="August,2018,3,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,National Day,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,Hari Raya Haji,No Event,Hack,Hack,No Event,No Event,No Event,No Event,No Event,No Event";
-        content=info.split(",");
-        month_year.setText(content[0]+","+content[1]);
-        start=((Integer.parseInt(content[2]))%7);
+        String info="August,2018,3,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,Hack,Hack,No Event,No Event,No Event,No Event,No Event,No Event";
+        /*
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("year").child("August");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String info = dataSnapshot.getValue(String.class);
+                Log.d("hi",info);
+                String[] temp = info.split(",");
+                for(int i=0; i<temp.length; i++){
+                    content.add(temp[i]);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*/
+        String[] temp = info.split(",");
+        for(int i=0; i<temp.length; i++){
+            content.add(temp[i]);
+        }
+        month_year.setText(content.get(0)+","+content.get(1));
+        start=((Integer.parseInt(content.get(2)))%7);
         for (int i=0;i<start;i++){
             LinearLayout ll=new LinearLayout(this.getContext());
             TextView a=new TextView(getContext());a.setText("");
@@ -83,14 +113,14 @@ public class school_cal_fragment extends Fragment {
             ll.addView(b);
             days.add(ll);
         }
-        for(int i=start;i<content.length+start-3;i++){
+        for(int i=start;i<content.size()+start-3;i++){
             LinearLayout ll=new LinearLayout(this.getContext());
             TextView a=new TextView(this.getContext());
             a.setTextSize(40);
             ll.addView(a);
             TextView b=new TextView(this.getContext());
             b.setTextSize(5);
-            ll.addView(b);b.setText(content[i-start+3]);
+            ll.addView(b);b.setText(content.get(i-start+3));
             days.add(ll);
         }
         myAdapter ma=new myAdapter(getContext());
@@ -169,7 +199,7 @@ public class school_cal_fragment extends Fragment {
                     if(position<start||position>start+days.size()-3)
                         throw new Exception();
                 bigDate.setText(String.valueOf(position-start+1));
-                bigEvent.setText(String.valueOf(content[position-start+3]));}catch(Exception e){}
+                bigEvent.setText(String.valueOf(content.get(position-start+3)));}catch(Exception e){}
             }
         });
         loadCalendar();

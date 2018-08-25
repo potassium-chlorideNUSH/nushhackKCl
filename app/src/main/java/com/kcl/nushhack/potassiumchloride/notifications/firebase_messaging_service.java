@@ -56,7 +56,6 @@ public class firebase_messaging_service extends FirebaseMessagingService {
 
         args.putString("title", notificationTitle);
         args.putString("content", notificationBody);
-        main.setNotification_args(args);
 
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
