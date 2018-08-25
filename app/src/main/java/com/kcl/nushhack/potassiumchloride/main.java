@@ -154,7 +154,7 @@ public class main extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.announcements) {
-            //load respective fragment
+           load_notif();
         } else if (id == R.id.timetable) {
             load_timetable();
         } else if (id == R.id.school_cal) {
