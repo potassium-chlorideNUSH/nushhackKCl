@@ -37,11 +37,15 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.kcl.nushhack.potassiumchloride.fragments.dummy.DummyContent;
+import com.kcl.nushhack.potassiumchloride.fragments.notification_fragment;
+import com.kcl.nushhack.potassiumchloride.notifications.firebase_messaging_service;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 
 public class main extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,notification_fragment.OnListFragmentInteractionListener {
 
     public static final String USER_TABLE = "users";
     public static final String STUDENT_TABLE = "students";
@@ -51,6 +55,8 @@ public class main extends AppCompatActivity
 
     private teacher Current_teacher;
     private student Current_student;
+
+    private static Bundle notification_args = new Bundle();
 
     ConstraintLayout cl;
     @Override
@@ -72,7 +78,8 @@ public class main extends AppCompatActivity
 
     }
 
-
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem x){}
     @Override
     protected void onStart(){
         super.onStart();
@@ -115,6 +122,7 @@ public class main extends AppCompatActivity
             });
         }
     }
+
 
     @Override
     public void onBackPressed() {
@@ -170,9 +178,10 @@ public class main extends AppCompatActivity
         for (Fragment fragment:getSupportFragmentManager().getFragments()) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-        //Fragment newFragment = new notif_fragment();
-        //getSupportFragmentManager().beginTransaction().add(dl.getId(),newFragment).commit();
+        notification_fragment newFragment = new notification_fragment();
+        newFragment.setArguments(notification_args);
 
+        getSupportFragmentManager().beginTransaction().add(cl.getId(),newFragment).commit();
     }
     void load_timetable(){
         setTitle("Your Timetable");for (Fragment fragment:getSupportFragmentManager().getFragments()) {
@@ -188,4 +197,13 @@ public class main extends AppCompatActivity
         //Fragment newFragment = new school_cal_fragment();
         //getSupportFragmentManager().beginTransaction().add(dl.getId(),newFragment).commit();
     }
+
+    public static Bundle getNotification_args() {
+        return notification_args;
+    }
+
+    public static void setNotification_args(Bundle notification_args) {
+        main.notification_args = notification_args;
+    }
+
 }
