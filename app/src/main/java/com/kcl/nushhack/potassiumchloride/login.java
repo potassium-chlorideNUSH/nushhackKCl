@@ -49,8 +49,6 @@ public class login extends AppCompatActivity {
         loginButton = findViewById(R.id.btn_login);
         registerButton = findViewById(R.id.register);
 
-        startActivity(new Intent(this, main.class));//delete later, just to bypass login
-        finish();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,7 +181,7 @@ public class login extends AppCompatActivity {
     private void writeNewUser(String userId, String name, String email, DatabaseReference ref) {
         //TODO
         //remove this when data loaded
-        user user = new user(name, email, main.TOKEN_STUDENT);
+        user user = new user(email, name, main.TOKEN_STUDENT);
 
         ref.setValue(user);
     }

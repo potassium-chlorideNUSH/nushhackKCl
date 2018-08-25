@@ -95,13 +95,15 @@ public class main extends AppCompatActivity
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         if(login.Current_user.getType().equals(TOKEN_STUDENT)){
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference(main.STUDENT_TABLE).child(mAuth.getCurrentUser().getUid());
+
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Current_student = new student();
+                    //Log.d("hi",dataSnapshot.child("m_group").getValue(long.class)+"");
                     Current_student.setM_group(dataSnapshot.child("m_group").getValue(long.class));
-                    Current_student.setStu_id(dataSnapshot.child("m_group").getValue(long.class));
-                    Current_student.setYear(dataSnapshot.child("m_group").getValue(long.class));
+                    Current_student.setStu_id(dataSnapshot.child("stu_id").getValue(long.class));
+                    Current_student.setYear(dataSnapshot.child("year").getValue(long.class));
                     DataSnapshot childSnapshot = dataSnapshot.child("lessonTaken");
                     for(DataSnapshot dss:childSnapshot.getChildren()){
                         String lessonID = dss.getValue(String.class);
