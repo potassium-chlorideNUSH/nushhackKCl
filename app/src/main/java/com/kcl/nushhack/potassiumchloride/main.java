@@ -91,7 +91,7 @@ public class main extends AppCompatActivity
         TextView header_name = headerLayout.findViewById(R.id.header_name);
         TextView header_email = headerLayout.findViewById(R.id.header_email);
         header_name.setText(login.Current_user.getName());
-        header_email.setText(login.Current_user.getEmail());
+         header_email.setText(login.Current_user.getEmail());
 
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         if(login.Current_user.getType().equals(TOKEN_STUDENT)){
@@ -180,7 +180,7 @@ public class main extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.announcements) {
-            //load respective fragment
+           load_notif();
         } else if (id == R.id.timetable) {
             load_timetable();
         } else if (id == R.id.school_cal) {

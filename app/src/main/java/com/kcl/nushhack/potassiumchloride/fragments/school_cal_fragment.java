@@ -71,7 +71,7 @@ public class school_cal_fragment extends Fragment {
         //somehow get the firebase thing as a whole string
         //month year day of 1st eventday1 eventday2 etc
         days.clear();
-        String info="August,2018,3,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,Hack,Hack,No Event,No Event,No Event,No Event,No Event,No Event";
+        String info="August,2018,3,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,National Day,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,No Event,Hari Raya Haji,No Event,Hack,Hack,No Event,No Event,No Event,No Event,No Event,No Event";
         content=info.split(",");
         month_year.setText(content[0]+","+content[1]);
         start=((Integer.parseInt(content[2]))%7);
