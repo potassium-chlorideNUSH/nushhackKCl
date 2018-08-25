@@ -30,12 +30,15 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.kcl.nushhack.potassiumchloride.R;
 
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
 public class firebase_messaging_service extends FirebaseMessagingService {
 
     private static final String TAG = "FirebaseMessagingServce";
+
+    //private ArrayList<String> titles, contents;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -47,6 +50,22 @@ public class firebase_messaging_service extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             notificationTitle = remoteMessage.getNotification().getTitle();
             notificationBody = remoteMessage.getNotification().getBody();
+            /*if (titles.size() < 10){
+                titles.set(titles.size() - 1, notificationTitle);
+            }
+            else{
+                titles.remove(0);
+                titles.set(9, notificationTitle);
+            }
+
+            if (contents.size() < 10){
+                contents.set(contents.size() - 1, notificationTitle);
+            }
+            else{
+                contents.remove(0);
+                contents.set(9, notificationTitle);
+            }*/
+
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
