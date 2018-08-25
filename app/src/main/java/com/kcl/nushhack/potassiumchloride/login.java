@@ -35,6 +35,8 @@ public class login extends AppCompatActivity {
     private AppCompatButton loginButton;
     private TextView registerButton;
 
+    ProgressDialog progressDialog;
+
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -63,18 +65,26 @@ public class login extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        //if(mAuth.getCurrentUser()==null) Log.d("lol","hi");
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()!=null){
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference(main.USER_TABLE).child(firebaseAuth.getCurrentUser().getUid());
+                    final DatabaseReference ref = FirebaseDatabase.getInstance().getReference(main.USER_TABLE).child(firebaseAuth.getCurrentUser().getUid());
                     ref.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Current_user = dataSnapshot.getValue(user.class);
-                            startActivity(new Intent(login.this, main.class));
-                            finish();
+                            if(dataSnapshot.getValue(user.class)==null) {
+                                //TODO
+                                //remove this if statement after data loaded
+                                writeNewUser(firebaseAuth.getCurrentUser().getUid(),"dummy",firebaseAuth.getCurrentUser().getEmail(),ref);
+                                Current_user = new user(firebaseAuth.getCurrentUser().getEmail(),"dummy",main.TOKEN_STUDENT);
+                                startActivity(new Intent(login.this, main.class));
+                                finish();
+                            } else {
+                                Current_user = dataSnapshot.getValue(user.class);
+                                startActivity(new Intent(login.this, main.class));
+                                finish();
+                            }
                         }
 
                         @Override
@@ -95,9 +105,15 @@ public class login extends AppCompatActivity {
         //updateUI(currentUser);
     }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        progressDialog.dismiss();
+    }
+
     private void startLogin(){
         loginButton.setEnabled(false);
-        final ProgressDialog progressDialog = new ProgressDialog(login.this,
+        progressDialog = new ProgressDialog(login.this,
                 R.style.AppTheme_NUSH_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
@@ -160,6 +176,14 @@ public class login extends AppCompatActivity {
         if(error) focusView.requestFocus();
 
         return !error;
+    }
+
+    private void writeNewUser(String userId, String name, String email, DatabaseReference ref) {
+        //TODO
+        //remove this when data loaded
+        user user = new user(name, email, main.TOKEN_STUDENT);
+
+        ref.setValue(user);
     }
 
 }
