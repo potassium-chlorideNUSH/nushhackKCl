@@ -49,6 +49,8 @@ public class login extends AppCompatActivity {
         loginButton = findViewById(R.id.btn_login);
         registerButton = findViewById(R.id.register);
 
+        startActivity(new Intent(this, main.class));//delete later, just to bypass login
+        finish();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
