@@ -46,6 +46,7 @@ public class main extends AppCompatActivity
     public static final String USER_TABLE = "users";
     public static final String STUDENT_TABLE = "students";
     public static final String TEACHER_TABLE = "teachers";
+    public static final String LESSON_TABLE = "modules";
     public static final String TOKEN_TEACHER = "TEACHER";
     public static final String TOKEN_STUDENT = "STUDENT";
 
@@ -84,13 +85,22 @@ public class main extends AppCompatActivity
         header_name.setText(login.Current_user.getName());
         header_email.setText(login.Current_user.getEmail());
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         if(login.Current_user.getType().equals(TOKEN_STUDENT)){
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference(main.STUDENT_TABLE).child(mAuth.getCurrentUser().getUid());
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Current_student = dataSnapshot.getValue(student.class);
+                    Current_student = new student();
+                    Current_student.setM_group(dataSnapshot.child("m_group").getValue(long.class));
+                    Current_student.setStu_id(dataSnapshot.child("m_group").getValue(long.class));
+                    Current_student.setYear(dataSnapshot.child("m_group").getValue(long.class));
+                    DataSnapshot childSnapshot = dataSnapshot.child("lessonTaken");
+                    for(DataSnapshot dss:childSnapshot.getChildren()){
+                        String lessonID = dss.getValue(String.class);
+                        Current_student.addLessons(lessonID);
+                    }
+                    Log.d("hi",Current_student.getLessons().get(0));
                 }
 
                 @Override
@@ -105,7 +115,14 @@ public class main extends AppCompatActivity
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Current_teacher = dataSnapshot.getValue(teacher.class);
+                    Current_teacher = new teacher();
+                    Current_teacher.setName(dataSnapshot.child("name").getValue(String.class));
+                    DataSnapshot childSnapshot = dataSnapshot.child("lessonTeach");
+                    for(DataSnapshot dss:childSnapshot.getChildren()){
+                        String lessonID = dss.getValue(String.class);
+                        Current_teacher.addLessonTeach(lessonID);
+                    }
+                    Log.d("hi1",Current_teacher.getLessonTeach().get(0));
                 }
 
                 @Override
