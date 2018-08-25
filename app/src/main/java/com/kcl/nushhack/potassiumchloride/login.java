@@ -34,7 +34,7 @@ public class login extends AppCompatActivity {
     private EditText passwordtext;
     private AppCompatButton loginButton;
 
-    private FirebaseAuth mAuth;
+    private static FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
@@ -54,6 +54,7 @@ public class login extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        //if(mAuth.getCurrentUser()==null) Log.d("lol","hi");
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
@@ -96,6 +97,7 @@ public class login extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (!task.isSuccessful()) {
+                        //Log.d("lol","hi1");
                         Toast.makeText(login.this, "Sign in failed", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -138,5 +140,9 @@ public class login extends AppCompatActivity {
         if(error) focusView.requestFocus();
 
         return !error;
+    }
+
+    public static void signOut(){
+        mAuth.signOut();
     }
 }

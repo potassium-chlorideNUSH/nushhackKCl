@@ -90,6 +90,15 @@ public class main extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if(item.getItemId()==R.id.signout){
+            login.signOut();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
