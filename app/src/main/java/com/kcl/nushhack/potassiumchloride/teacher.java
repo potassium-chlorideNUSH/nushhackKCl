@@ -7,6 +7,8 @@ import java.util.List;
  */
 
 public class teacher extends user {
-    List<lesson> lessons;
+    public teacher(){
+
+    }
 
 }

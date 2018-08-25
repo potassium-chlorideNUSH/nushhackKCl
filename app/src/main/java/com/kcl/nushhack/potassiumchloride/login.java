@@ -33,6 +33,7 @@ public class login extends AppCompatActivity {
     private EditText idText;
     private EditText passwordtext;
     private AppCompatButton loginButton;
+    private TextView registerButton;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -44,11 +45,19 @@ public class login extends AppCompatActivity {
         idText = findViewById(R.id.input_id);
         passwordtext = findViewById(R.id.input_password);
         loginButton = findViewById(R.id.btn_login);
+        registerButton = findViewById(R.id.register);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startLogin();
+            }
+        });
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(login.this, "Coming soon!",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -88,9 +97,15 @@ public class login extends AppCompatActivity {
 
     private void startLogin(){
         loginButton.setEnabled(false);
+        final ProgressDialog progressDialog = new ProgressDialog(login.this,
+                R.style.AppTheme_NUSH_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Authenticating...");
+        progressDialog.show();
+
+
         String email = idText.getText().toString();
         String password = passwordtext.getText().toString();
-
 
         if(validate_login_input(email, password)) {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -98,12 +113,14 @@ public class login extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (!task.isSuccessful()) {
                         loginButton.setEnabled(true);
+                        progressDialog.dismiss();
                         Toast.makeText(login.this, "Sign in failed "+task.getException(), Toast.LENGTH_LONG).show();
                     }
                 }
             });
         } else {
             loginButton.setEnabled(true);
+            progressDialog.dismiss();
             Toast.makeText(login.this, "Sign in failed", Toast.LENGTH_LONG).show();
         }
 
