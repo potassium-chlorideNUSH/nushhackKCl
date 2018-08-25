@@ -22,16 +22,16 @@
 
         </activity>
         <activity android:name=".main">
+
+        </activity>
+        <activity
+            android:name=".splashactivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".splashactivity"
-            android:theme="@style/SplashTheme">
-
         </activity>
 
         <service android:name=".notifications.firebase_messaging_service">
