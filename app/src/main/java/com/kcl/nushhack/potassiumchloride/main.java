@@ -3,6 +3,7 @@ package com.kcl.nushhack.potassiumchloride;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -93,7 +95,9 @@ public class main extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId()==R.id.signout){
-            login.signOut();
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(main.this, login.class));
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

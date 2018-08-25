@@ -34,7 +34,7 @@ public class login extends AppCompatActivity {
     private EditText passwordtext;
     private AppCompatButton loginButton;
 
-    private static FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
@@ -73,7 +73,6 @@ public class login extends AppCompatActivity {
 
                         }
                     });
-
                 }
             }
         };
@@ -88,6 +87,7 @@ public class login extends AppCompatActivity {
     }
 
     private void startLogin(){
+        loginButton.setEnabled(false);
         String email = idText.getText().toString();
         String password = passwordtext.getText().toString();
 
@@ -97,12 +97,13 @@ public class login extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (!task.isSuccessful()) {
-                        //Log.d("lol","hi1");
-                        Toast.makeText(login.this, "Sign in failed", Toast.LENGTH_LONG).show();
+                        loginButton.setEnabled(true);
+                        Toast.makeText(login.this, "Sign in failed "+task.getException(), Toast.LENGTH_LONG).show();
                     }
                 }
             });
         } else {
+            loginButton.setEnabled(true);
             Toast.makeText(login.this, "Sign in failed", Toast.LENGTH_LONG).show();
         }
 
@@ -113,21 +114,13 @@ public class login extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() >= 8;
+        return !TextUtils.isEmpty(password)&& password.length() >= 8;
     }
 
     private boolean validate_login_input(String email, String password){
         boolean error = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            passwordtext.setError(getString(R.string.error_invalid_password));
-            focusView = passwordtext;
-            error = true;
-        }
-
-        // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             idText.setError(getString(R.string.error_field_required));
             focusView = idText;
@@ -137,12 +130,19 @@ public class login extends AppCompatActivity {
             focusView = idText;
             error = true;
         }
+
+        else if(TextUtils.isEmpty(password)){
+            passwordtext.setError("This field is required");
+        }
+        else if (!isPasswordValid(password)) {
+            passwordtext.setError(getString(R.string.error_invalid_password));
+            focusView = passwordtext;
+            error = true;
+        }
+
         if(error) focusView.requestFocus();
 
         return !error;
     }
 
-    public static void signOut(){
-        mAuth.signOut();
-    }
 }

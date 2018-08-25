@@ -24,7 +24,7 @@ public class splashactivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
+
         mAuth = FirebaseAuth.getInstance();
 
         if(mAuth.getCurrentUser()==null){
@@ -46,19 +46,9 @@ public class splashactivity extends AppCompatActivity{
                 }
             });
 
-        } else {
-            new CountDownTimer(10000, 400) {
-
-                public void onTick(long millisUntilFinished) {
-                }
-
-                public void onFinish() {
-                    startActivity(new Intent(splashactivity.this, login.class));
-                    finish();
-                }
-            }.start();
         }
-        */
+
+        /*
         new CountDownTimer(800, 400) {
 
             public void onTick(long millisUntilFinished) {
@@ -69,6 +59,7 @@ public class splashactivity extends AppCompatActivity{
                 finish();
             }
         }.start();
+        */
 
 
 
