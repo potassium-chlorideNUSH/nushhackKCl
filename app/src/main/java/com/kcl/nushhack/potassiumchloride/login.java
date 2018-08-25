@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.AppCompatButton;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,13 +18,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class login extends AppCompatActivity {
 
     private EditText idText;
     private EditText passwordtext;
-    private Button loginButton;
+    private AppCompatButton loginButton;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -36,12 +39,12 @@ public class login extends AppCompatActivity {
         passwordtext = findViewById(R.id.input_password);
         loginButton = findViewById(R.id.btn_login);
 
-        /*loginButton.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startLogin();
             }
-        });*/
+        });
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -49,7 +52,9 @@ public class login extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()!=null){
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                     startActivity(new Intent(login.this, main.class));
+                    finish();
                 }
             }
         };
@@ -65,6 +70,8 @@ public class login extends AppCompatActivity {
     private void startLogin(){
         String email = idText.getText().toString();
         String password = passwordtext.getText().toString();
+
+
         if(validate_login_input(email, password)) {
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -77,46 +84,40 @@ public class login extends AppCompatActivity {
         } else {
             Toast.makeText(login.this, "Sign in failed", Toast.LENGTH_LONG).show();
         }
+
+    }
+
+    private boolean isEmailValid(String email) {
+        return email.contains("@");
+    }
+
+    private boolean isPasswordValid(String password) {
+        return password.length() >= 8;
     }
 
     private boolean validate_login_input(String email, String password){
-        return true;
-    }
+        boolean error = false;
+        View focusView = null;
 
-    public void login(View view) {
-        loginButton.setEnabled(false);
-        final ProgressDialog progressDialog = new ProgressDialog(login.this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Logging in...");
-        progressDialog.show();
-        if (!check()) {
-            loginFail();
-            return;
+        // Check for a valid password, if the user entered one.
+        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+            passwordtext.setError(getString(R.string.error_invalid_password));
+            focusView = passwordtext;
+            error = true;
         }
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        progressDialog.dismiss();
-                        loginPass();
-                    }
-                }, 3000);
-    }
 
-    void loginFail(){
-        Toast t=Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG);
-        t.show();
-        loginButton.setEnabled(true);
-    }
-    void loginPass(){
-        //go main
-        Intent intent=new Intent(this,main.class);
-        intent.putExtra("name",idText.getText().toString());
-        loginButton.setEnabled(true);
-        startActivity(intent);
-    }
-    public boolean check() {
-        boolean valid = true;
-        //check on firebase
-        return valid;
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(email)) {
+            idText.setError(getString(R.string.error_field_required));
+            focusView = idText;
+            error = true;
+        } else if (!isEmailValid(email)) {
+            idText.setError(getString(R.string.error_invalid_email));
+            focusView = idText;
+            error = true;
+        }
+        if(error) focusView.requestFocus();
+
+        return !error;
     }
 }
