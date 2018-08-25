@@ -39,6 +39,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.kcl.nushhack.potassiumchloride.fragments.dummy.DummyContent;
 import com.kcl.nushhack.potassiumchloride.fragments.notification_fragment;
+import com.kcl.nushhack.potassiumchloride.fragments.school_cal_fragment;
 import com.kcl.nushhack.potassiumchloride.notifications.firebase_messaging_service;
 
 import java.lang.reflect.Constructor;
@@ -196,6 +197,8 @@ public class main extends AppCompatActivity
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
         notification_fragment newFragment = new notification_fragment();
+        notification_args.putStringArrayList("titles", new ArrayList<String>());
+        notification_args.putStringArrayList("contents", new ArrayList<String>());
         newFragment.setArguments(notification_args);
 
         getSupportFragmentManager().beginTransaction().add(cl.getId(),newFragment).commit();
@@ -211,16 +214,25 @@ public class main extends AppCompatActivity
         setTitle("School Calendar");for (Fragment fragment:getSupportFragmentManager().getFragments()) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
-        //Fragment newFragment = new school_cal_fragment();
-        //getSupportFragmentManager().beginTransaction().add(dl.getId(),newFragment).commit();
+        Fragment newFragment = new school_cal_fragment();
+        getSupportFragmentManager().beginTransaction().add(cl.getId(),newFragment).commit();
     }
 
     public static Bundle getNotification_args() {
         return notification_args;
     }
 
-    public static void setNotification_args(Bundle notification_args) {
-        main.notification_args = notification_args;
+    public static void setNotification_args(Bundle args) {
+        ArrayList<String> titles = main.notification_args.getStringArrayList("titles");
+        titles.add(args.getString("title"));
+        ArrayList<String> contents = main.notification_args.getStringArrayList("contents");
+        contents.add(args.getString("content"));
+        main.notification_args = new Bundle();
+        notification_args.putStringArrayList("titles", titles);
+        notification_args.putStringArrayList("contents", contents);
+        notification_fragment newFragment = new notification_fragment();
+        newFragment.setArguments(notification_args);
+        newFragment.update();
     }
 
 }

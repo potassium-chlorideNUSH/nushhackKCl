@@ -53,6 +53,8 @@ public class MyNotificationRecyclerViewAdapter extends RecyclerView.Adapter<MyNo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View titleText = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_notification, parent, false);
+        View contentText = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_notification, parent, false);
         return new ViewHolder(titleText);
     }
 

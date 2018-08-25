@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,12 @@ public class notification_fragment extends Fragment {
         else {
             titles = getArguments().getStringArrayList("titles");
             contents = getArguments().getStringArrayList("contents");
+            for (String s: titles){
+                Log.d("TITLE", s);
+            }
+            for (String t: contents){
+                Log.d("CONTENT", t);
+            }
             adapter.setTitles(titles);
             adapter.notifyDataSetChanged();
             adapter.setContents(contents);
@@ -143,6 +150,19 @@ public class notification_fragment extends Fragment {
         adapter.setContents(contents);
     }
 
-
+    public void update(){
+        titles = getArguments().getStringArrayList("titles");
+        contents = getArguments().getStringArrayList("contents");
+        for (String s: titles){
+            Log.d("TITLE", s);
+        }
+        for (String t: contents){
+            Log.d("CONTENT", t);
+        }
+        adapter.setTitles(titles);
+        adapter.notifyDataSetChanged();
+        adapter.setContents(contents);
+        adapter.notifyDataSetChanged();
+    }
 }
 
